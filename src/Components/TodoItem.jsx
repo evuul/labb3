@@ -5,37 +5,36 @@ function TodoItem({ todo, toggleTodo, deleteTodo, updateTodo }) {
   const [newText, setNewText] = useState(todo.text);
 
   const handleUpdate = () => {
-    if (newText.trim() !== "") {
-      updateTodo(todo.id, newText);
-    } else {
-      setNewText(todo.text); // Behåll gamla texten om det är tomt
-    }
+    updateTodo(todo.id, newText);
     setIsEditing(false);
   };
 
   return (
-    <li className="todo-item">
-      {/* Checkmark som ändras mellan tom ruta och grön check */}
+    <li
+      className={`todo-item ${todo.completed ? "completed" : ""}`}
+      style={{
+        opacity: todo.completed ? 0.6 : 1, // Lägg till genomskinlighet för klara uppgifter
+        transition: "opacity 0.3s ease",
+      }}
+    >
       <span onClick={() => toggleTodo(todo.id)} className={`checkmark ${todo.completed ? "checked" : ""}`}>
         {todo.completed ? "✔️" : ""}
-      </span> 
+      </span>
 
-      {/* Om i redigeringsläge -> visa inputfält, annars text */}
+      {/*Redigering av todo */}
       {isEditing ? (
         <input
           type="text"
           value={newText}
           onChange={(e) => setNewText(e.target.value)}
-          onBlur={handleUpdate} // Uppdatera texten när fältet tappas ur fokus
+          onBlur={handleUpdate}
           autoFocus
         />
       ) : (
-        <span className={`todo-text ${todo.completed ? "completed" : ""}`} onDoubleClick={() => setIsEditing(true)}>
-          {todo.text}
-        </span>
+        <span onDoubleClick={() => setIsEditing(true)}>{todo.text}</span>
       )}
 
-      {/* Röd ta bort-knapp */}
+      {/*Ta bort-knapp */}
       <button className="delete-btn" onClick={() => deleteTodo(todo.id)}>Ta bort</button>
     </li>
   );

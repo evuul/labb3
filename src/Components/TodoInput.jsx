@@ -1,23 +1,25 @@
 import { useState } from "react";
 
 function TodoInput({ addTodo }) {
-  const [inputValue, setInputValue] = useState("");
+  const [text, setText] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTodo(inputValue);
-    setInputValue("");
+    if (text.trim() === "") return; // Ignorera tomma strängar
+    addTodo(text.trim());
+    setText(""); // Rensa input efter inmatning
   };
 
   return (
-    <form className="todo-input-container" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="todo-input-container">
       <input
         type="text"
         placeholder="Lägg till en uppgift..."
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        autoFocus // Markören börjar på inputfältet vid öppning
       />
-      <button type="submit">Lägg till</button>
+      <button type="submit" disabled={text.trim() === ""}>Lägg till</button>
     </form>
   );
 }

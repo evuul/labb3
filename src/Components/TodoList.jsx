@@ -1,35 +1,59 @@
-import TodoInput from "./TodoInput";
+import { useState, useEffect } from "react";
 import TodoItem from "./TodoItem";
+import TodoInput from "./TodoInput";
+import Clock from "./Clock";
 
-function TodoList({ todos, setTodos }) {
+function TodoList() {
+  // Ladda sparade todos från Local Storage vid start
+  const [todos, setTodos] = useState(() => {
+    const savedTodos = localStorage.getItem("todos");
+    return savedTodos ? JSON.parse(savedTodos) : [];
+  });
+
+  // Uppdatera Local Storage varje gång `todos` ändras
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
+  // Lägg till ny todo
   const addTodo = (text) => {
-    if (text.trim() !== "") {
-      setTodos([...todos, { id: Date.now(), text, completed: false }]);
-    }
+    if (text.trim() === "") return;
+    const newTodo = { id: Date.now(), text, completed: false };
+    setTodos([...todos, newTodo]);
   };
 
+  // Markera som klar
   const toggleTodo = (id) => {
-    setTodos(
-      todos.map((todo) =>
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
   };
 
-  const deleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
-
+  // ✏️ Uppdatera todo-text
   const updateTodo = (id, newText) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, text: newText } : todo
-      )
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => (todo.id === id ? { ...todo, text: newText } : todo))
     );
   };
 
+  // Ta bort en todo
+  const deleteTodo = (id) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  };
+
+  // Rensa alla todos (med bekräftelse)
+  const clearTodos = () => {
+    if (window.confirm("Är du säker på att du vill rensa alla uppgifter?")) {
+      setTodos([]);
+    }
+  };
+
   return (
-    <div>
+    <div className="container">
+       <Clock /> {/* Lägg till klockan */}
+      <h1>Min Todo Lista</h1>
       <TodoInput addTodo={addTodo} />
       <ul>
         {todos.map((todo) => (
@@ -43,17 +67,10 @@ function TodoList({ todos, setTodos }) {
         ))}
       </ul>
       {todos.length > 0 && (
-  <button 
-    className="clear-btn" 
-    onClick={() => {
-      if (window.confirm("Är du säker på att du vill rensa hela listan?")) {
-        setTodos([]);
-      }
-    }}
-  >
-    Rensa alla
-  </button>
-)}
+        <button className="clear-btn" onClick={clearTodos}>
+          Rensa alla
+        </button>
+      )}
     </div>
   );
 }

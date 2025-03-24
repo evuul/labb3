@@ -149,3 +149,13 @@ ul {
 .clear-btn:hover {
   background-color: #d98880; /* Ljus röd färg */
 }
+
+.clock {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
