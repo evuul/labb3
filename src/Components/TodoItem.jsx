@@ -1,11 +1,11 @@
 import { useState } from "react";
 
 function TodoItem({ todo, toggleTodo, deleteTodo, updateTodo }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [newText, setNewText] = useState(todo.text);
+  const [isEditing, setIsEditing] = useState(false); // Redigering av todo texten
+  const [newText, setNewText] = useState(todo.text); 
 
   const handleUpdate = () => {
-    updateTodo(todo.id, newText);
+    updateTodo(todo.id, newText); // Uppdaterar min todo-text
     setIsEditing(false);
   };
 

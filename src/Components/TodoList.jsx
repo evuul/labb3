@@ -31,7 +31,7 @@ function TodoList() {
     );
   };
 
-  // ✏️ Uppdatera todo-text
+  //  Uppdatera todo-text
   const updateTodo = (id, newText) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) => (todo.id === id ? { ...todo, text: newText } : todo))
@@ -53,7 +53,7 @@ function TodoList() {
 
   return (
     <div className="container">
-       <Clock /> {/* Lägg till klockan */}
+       <Clock />
       <h1>Min Todo Lista</h1>
       <TodoInput addTodo={addTodo} />
       <ul>
