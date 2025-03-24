@@ -45,7 +45,8 @@ function TodoList() {
 
   // Rensa alla todos (med bekräftelse)
   const clearTodos = () => {
-    if (window.confirm("Är du säker på att du vill rensa alla uppgifter?")) {
+    const isConfirmed = window.confirm("Är du säker på att du vill rensa hela din To Do Lista? Ja eller Nej");
+    if (isConfirmed) {
       setTodos([]);
     }
   };
